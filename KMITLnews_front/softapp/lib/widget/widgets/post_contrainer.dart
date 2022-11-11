@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:softapp/widgets/tag_button.dart';
+import 'package:softapp/widgets/widgets.dart';
+int i = 0;
 
 class PostContainer extends StatelessWidget {
   const PostContainer({Key? key}) : super(key: key);
@@ -30,36 +35,74 @@ class PostContainer extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
             child: Container(
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width*0.95,
+              width: MediaQuery.of(context).size.width * 0.95,
               color: Colors.green,
-              child: Row(
+              child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      width: avatarDiameter,
-                      height: avatarDiameter,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(avatarDiameter / 2),
-                        //ใส่รูป
-                        child: Image(
-                          image: NetworkImage('shorturl.at/bhFJO'),
-                          fit: BoxFit.cover,
+                  Row(
+                    children: <Widget>[
+                      //**************************avatar******************************
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          width: avatarDiameter,
+                          height: avatarDiameter,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(avatarDiameter / 2),
+                            //ใส่รูป
+                            child: Image(
+                              image: NetworkImage('shorturl.at/bhFJO'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Text(
-                    //ใส่ชื่อแต่ละคนโพสต์
-                    'Username',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                      //***************************************************************
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              //ใส่ชื่อแต่ละคนโพสต์
+                              'Username',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  //decoration: BoxDecoration(color: Colors.red),
+                                  alignment: Alignment.centerLeft,
+                                  height: 15,
+                                  width: MediaQuery.of(context).size.width * 0.6,
+                                  child: ListView.builder(
+                                      itemCount: 8,
+                                      scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return TagButton();
+                                        },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      IcButton(
+                          icon: FaIcon(FontAwesomeIcons.flag),
+                          iconSize: 23.0,
+                          onPressed: () => print("report")),
+                    ],
                   ),
                 ],
               ),
@@ -88,36 +131,6 @@ class PostContainer extends StatelessWidget {
       ),
     );
   }
+
+
 }
-
-
-/*Row(
-      children: [
-        Padding(
-          //padding: const EdgeInsets.all(8),
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child:  Container(
-            //margin: const EdgeInsets.symmetric(vertical: 5.0),
-            //padding: const EdgeInsets.symmetric(vertical: 8.0),
-            width: avatarDiameter,
-            height: avatarDiameter,
-            //color: Color.fromARGB(255, 145, 141, 141),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.circle,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(avatarDiameter/2),
-              //ใส่รูป
-              child: Image(image: NetworkImage('shorturl.at/bhFJO'),fit: BoxFit.cover,),
-            ),
-          ),
-          ),
-        Text('Username',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-        ),
-      ],
-    );*/
