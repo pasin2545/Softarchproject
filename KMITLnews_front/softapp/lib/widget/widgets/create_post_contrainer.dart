@@ -65,23 +65,3 @@ class CreatePostContrainer extends StatelessWidget {
     );
   }
 }
-
-/*child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(width: 2.0,),
-                        ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(width: 2.0),
-                        ),
-                    hintText: "อยากบอกอะไรให้ KMITL รู้?",
-                    hintStyle: TextStyle(fontSize: 18.0, color: Colors.white,),
-                    fillColor: Color.fromARGB(255, 118, 117, 117),
-                    filled: true,
-                    contentPadding: EdgeInsets.all(8),
-                  ),
-                ),*/
