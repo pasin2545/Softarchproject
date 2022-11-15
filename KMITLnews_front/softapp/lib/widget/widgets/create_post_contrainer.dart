@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:softapp/pages/post_page.dart';
 
 class CreatePostContrainer extends StatelessWidget {
   //รับค่าจากรูปโปร user จาก backend
@@ -29,7 +30,7 @@ class CreatePostContrainer extends StatelessWidget {
               ),*/
               Expanded(
                 child: ElevatedButton(
-                  onPressed: (() => print("โพสต์")), 
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context){return PostPage();})) ,
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text("อยากบอกอะไรให้ KMITL รู้?",

@@ -118,7 +118,6 @@ class PostContainer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              //height: MediaQuery.of(context).size.width * 0.05,
                               margin: EdgeInsets.fromLTRB(25, 0, 0, 0),
                               child: Text(
                                 '${now.day}/${now.month}/${now.year}   ${now.hour.toString().padLeft(2,'0')}.${now.minute.toString().padLeft(2,'0')} น.',
