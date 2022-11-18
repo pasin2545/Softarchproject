@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,6 +15,34 @@ class MultilineTextField extends StatefulWidget {
 }
 
 class _MultilineTextFieldState extends State<MultilineTextField> {
+
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTamp = File(image.path);
+
+      setState(() => this.image = imageTamp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: ${e}');
+    }
+  }
+
+  Future DeleteImage() async {
+    try {
+      setState(() {
+        image = null;
+        this.image = image;
+      });
+    } on PlatformException catch (e) {
+      print('failed Cancel');
+    }
+  }
+
   final TextEditingController _Textcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -45,6 +76,26 @@ class _MultilineTextFieldState extends State<MultilineTextField> {
         height: MediaQuery.of(context).size.width * 0.58,
         width: MediaQuery.of(context).size.width * 1,
         decoration: BoxDecoration(color: Colors.red),
+        child: Column(
+          children: [
+            if (image != null) ...[
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IcButton(
+                          icon: FaIcon(FontAwesomeIcons.xmark),
+                          iconSize: 18,
+                          onPressed: () => DeleteImage()),
+                    ],
+                  ),
+                ),
+              Image.file(image!),
+            ] else ...[
+              Text("No image selected"),
+            ]
+          ],
+        ),
       ),
       Container(
         height: MediaQuery.of(context).size.width * 0.165,
@@ -57,11 +108,13 @@ class _MultilineTextFieldState extends State<MultilineTextField> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
                       child: IcButton(
                           icon: FaIcon(FontAwesomeIcons.image),
                           iconSize: 26,
-                          onPressed: () => print('รูป'))),
+                          onPressed: () {
+                            pickImage();
+                          })),
                 ],
               ),
             ),
