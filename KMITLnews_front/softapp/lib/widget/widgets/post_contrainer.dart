@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:softapp/widgets/tag_button.dart';
 import 'package:softapp/widgets/widgets.dart';
 
 class PostContainer extends StatelessWidget {
@@ -16,10 +13,12 @@ class PostContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        Expanded(
+        child: Container(
           color: Colors.black,
-          height: MediaQuery.of(context).size.height * 1.0,
+          //height: MediaQuery.of(context).size.height * 0.786,
           child: _postsListView(context),
+        ),
         ),
       ],
     );
@@ -84,7 +83,6 @@ class PostContainer extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  //decoration: BoxDecoration(color: Colors.red),
                                   alignment: Alignment.centerLeft,
                                   height: 15,
                                   width:
@@ -93,7 +91,9 @@ class PostContainer extends StatelessWidget {
                                     itemCount: 8,
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
-                                      return TagButton(onPressed: () => print('tag'),);
+                                      return TagButton(onPressed: () => print('tag'),
+                                      tags: 'GG',
+                                      );
                                     },
                                   ),
                                 ),

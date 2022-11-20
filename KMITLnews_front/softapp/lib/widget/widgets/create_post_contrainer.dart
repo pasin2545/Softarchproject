@@ -7,6 +7,7 @@ class CreatePostContrainer extends StatelessWidget {
   //รับค่าจากรูปโปร user จาก backend
   final NetworkImage image;
 
+  
   const CreatePostContrainer({super.key, required this.image});
 
   @override
