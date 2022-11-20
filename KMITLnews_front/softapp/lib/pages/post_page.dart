@@ -28,7 +28,7 @@ class _PostPageState extends State<PostPage> {
   String name = '';
   List<String> _list = [];
   List<String> _taglist = [];
-  List<String> _reallist = ['test1','test2'];
+  List<String> _reallist = ['test1', 'test2'];
   List<String> _newTagList = [];
 
   void _openEndDrawer() {
@@ -83,22 +83,23 @@ class _PostPageState extends State<PostPage> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(myController.text);
-                    if (_list.contains(myController.text) == false && _taglist.contains(myController.text) == false) {
-                      _newTagList.add(myController.text);
-                    }
-                    if (_taglist.contains(myController.text) == false) {
-                      print('hello');
-                      _taglist.add(myController.text);
-                    }
-                    _list.forEach((item) {
+                  if (_list.contains(myController.text) == false &&
+                      _taglist.contains(myController.text) == false) {
+                    _newTagList.add(myController.text);
+                  }
+                  if (_taglist.contains(myController.text) == false) {
+                    print('hello');
+                    _taglist.add(myController.text);
+                  }
+                  _list.forEach((item) {
                     print(item);
-                    });
-                    _taglist.forEach((item) {
-                    print("*** "+item);
-                    });
-                    _newTagList.forEach((item) {
-                    print('###  '+item);                      
-                    });
+                  });
+                  _taglist.forEach((item) {
+                    print("*** " + item);
+                  });
+                  _newTagList.forEach((item) {
+                    print('###  ' + item);
+                  });
                   myController.clear();
                 },
                 child: const Text('OK'),
@@ -229,11 +230,13 @@ class _PostPageState extends State<PostPage> {
                                           return;
                                         setState((() => this.name = name));
                                       },
-                                      icon: FaIcon(FontAwesomeIcons.plus)),
+                                      icon: FaIcon(FontAwesomeIcons.plus),
+                                      //iconSize: 8,
+                                  ),
                                 ),
                                 Container(
                                   alignment: Alignment.centerLeft,
-                                  height: 15,
+                                  height: 20,
                                   width:
                                       MediaQuery.of(context).size.width * 0.5,
                                   child: ListView.builder(
@@ -242,7 +245,16 @@ class _PostPageState extends State<PostPage> {
                                     itemBuilder: (context, index) {
                                       return TagsField(
                                         onPressed: () {
-                                          return 
+                                          _taglist.forEach((item) {
+                                            if(item == _taglist[index]){
+                                              setState((() => _taglist.remove(item)));
+                                              _newTagList.forEach((element) {
+                                              if(element == item){
+                                                setState((() => _newTagList.remove(element)));
+                                              }
+                                            });
+                                            }
+                                          });
                                         },
                                         tags: _taglist[index],
                                       );
