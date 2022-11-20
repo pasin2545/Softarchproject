@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -5,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:softapp/widgets/multi_text_field.dart';
 import 'package:softapp/widgets/navigation_drawer.dart';
 import 'package:softapp/widgets/circle_button.dart';
+import 'package:textfield_search/textfield_search.dart';
 
 import '../widgets/create_post_contrainer.dart';
 import '../widgets/icbutton.dart';
@@ -12,7 +14,6 @@ import '../widgets/post_contrainer.dart';
 import '../widgets/tag_button.dart';
 
 class PostPage extends StatefulWidget {
-
   const PostPage({Key? key}) : super(key: key);
 
   @override
@@ -21,17 +22,84 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController myController = TextEditingController();
+  String text = '';
+  String name = '';
+  List<String> _list = [];
+  List<String> _taglist = [];
+
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
   }
 
-  void _closeEndDrawer() {
-    Navigator.of(context).pop();
+  @override
+  void initState(){
+    super.initState();
+
+    myController = TextEditingController();
   }
+  
+  Future<List> fetchdata() async {
+    _list.add('กบ' + 'กำกวม');
+    _list.add('test' + 'Item 2');
+    _list.add('test' + 'Item 3');
+    return _list;
+  }
+
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
+  Future<String?> _showAddTag(BuildContext context) {
+    TextEditingController myController = TextEditingController();
+
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Tags Search'),
+            content: Container(
+              height: MediaQuery.of(context).size.width * 1,
+              width: MediaQuery.of(context).size.width * 1,
+              child: Form(
+                  child: ListView(
+                children: <Widget>[
+                  TextFieldSearch(
+                      label: 'Simple Future List',
+                      controller: myController,
+                      minStringLength: 1,
+                      future: () {
+                        return fetchdata();
+                      }),
+                ],
+              )),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: (() => Navigator.pop(context, 'Cancel')),
+                  child: const Text('Cancel')),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(myController.text);
+                  if (_list.any((element) => myController.text != element)){
+                    _list.add(myController.text);
+                    _taglist.add(myController.text);
+                    }
+                  myController.clear();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
     const double avatarDiameter = 70;
     return Scaffold(
       key: _scaffoldKey,
@@ -144,20 +212,27 @@ class _PostPageState extends State<PostPage> {
                             Row(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  child: IconButton(
+                                      onPressed: () async{ final name = await _showAddTag(context);
+                                        if(name == null || name.isEmpty)return;
+                                        setState((() => this.name= name));
+                                      },
+                                      icon: FaIcon(FontAwesomeIcons.plus)),
+                                ),
+                                Container(
                                   alignment: Alignment.centerLeft,
-                                  height: 15,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  child: ListView.builder(
-                                    itemCount: 8,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return TagButton(
-                                        onPressed: () => print('tag'),
-                                      );
-                                    },
-                                  ),
+                              height: 15,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: ListView.builder(
+                                itemCount: _taglist.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return TagButton(
+                                    onPressed: () => print('tag'),
+                                    tags: _taglist[index],
+                                  );
+                                },
+                              ),
                                 ),
                               ],
                             ),
@@ -179,4 +254,26 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
+}
+
+class SearchTextField extends StatelessWidget {
+  final TextEditingController myController;
+  final ValueChanged<String> fieldValue;
+  const SearchTextField(
+      {Key? key, required this.myController, required this.fieldValue})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: CupertinoSearchTextField(
+        controller: myController,
+        onChanged: (String value) {
+          fieldValue('$value');
+        },
+      ),
+    );
+  }
+
 }
