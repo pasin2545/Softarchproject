@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:softapp/widgets/multi_text_field.dart';
 import 'package:softapp/widgets/navigation_drawer.dart';
 import 'package:softapp/widgets/circle_button.dart';
+import 'package:softapp/widgets/widgets.dart';
 import 'package:textfield_search/textfield_search.dart';
 
 import '../widgets/create_post_contrainer.dart';
@@ -27,23 +28,22 @@ class _PostPageState extends State<PostPage> {
   String name = '';
   List<String> _list = [];
   List<String> _taglist = [];
-
+  List<String> _reallist = ['test1','test2'];
+  List<String> _newTagList = [];
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     myController = TextEditingController();
   }
-  
+
   Future<List> fetchdata() async {
-    _list.add('กบ' + 'กำกวม');
-    _list.add('test' + 'Item 2');
-    _list.add('test' + 'Item 3');
+    _list = _reallist;
     return _list;
   }
 
@@ -83,10 +83,22 @@ class _PostPageState extends State<PostPage> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(myController.text);
-                  if (_list.any((element) => myController.text != element)){
-                    _list.add(myController.text);
-                    _taglist.add(myController.text);
+                    if (_list.contains(myController.text) == false && _taglist.contains(myController.text) == false) {
+                      _newTagList.add(myController.text);
                     }
+                    if (_taglist.contains(myController.text) == false) {
+                      print('hello');
+                      _taglist.add(myController.text);
+                    }
+                    _list.forEach((item) {
+                    print(item);
+                    });
+                    _taglist.forEach((item) {
+                    print("*** "+item);
+                    });
+                    _newTagList.forEach((item) {
+                    print('###  '+item);                      
+                    });
                   myController.clear();
                 },
                 child: const Text('OK'),
@@ -96,10 +108,8 @@ class _PostPageState extends State<PostPage> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     const double avatarDiameter = 70;
     return Scaffold(
       key: _scaffoldKey,
@@ -213,26 +223,31 @@ class _PostPageState extends State<PostPage> {
                               children: [
                                 Container(
                                   child: IconButton(
-                                      onPressed: () async{ final name = await _showAddTag(context);
-                                        if(name == null || name.isEmpty)return;
-                                        setState((() => this.name= name));
+                                      onPressed: () async {
+                                        final name = await _showAddTag(context);
+                                        if (name == null || name.isEmpty)
+                                          return;
+                                        setState((() => this.name = name));
                                       },
                                       icon: FaIcon(FontAwesomeIcons.plus)),
                                 ),
                                 Container(
                                   alignment: Alignment.centerLeft,
-                              height: 15,
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: ListView.builder(
-                                itemCount: _taglist.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return TagButton(
-                                    onPressed: () => print('tag'),
-                                    tags: _taglist[index],
-                                  );
-                                },
-                              ),
+                                  height: 15,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  child: ListView.builder(
+                                    itemCount: _taglist.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return TagsField(
+                                        onPressed: () {
+                                          return 
+                                        },
+                                        tags: _taglist[index],
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -254,26 +269,4 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
-}
-
-class SearchTextField extends StatelessWidget {
-  final TextEditingController myController;
-  final ValueChanged<String> fieldValue;
-  const SearchTextField(
-      {Key? key, required this.myController, required this.fieldValue})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: CupertinoSearchTextField(
-        controller: myController,
-        onChanged: (String value) {
-          fieldValue('$value');
-        },
-      ),
-    );
-  }
-
 }
