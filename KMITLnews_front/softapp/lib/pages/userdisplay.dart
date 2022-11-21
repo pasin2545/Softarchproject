@@ -25,62 +25,61 @@ class _userdisplayState extends State<userdisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: NavigateDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Color.fromARGB(255, 222, 105, 21),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'KMITL',
-                  style: TextStyle(
-                      fontSize: 24,
+    return MaterialApp(
+      home: Scaffold(
+        key: _scaffoldKey,
+        endDrawer: NavigateDrawer(),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 222, 105, 21),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'KMITL',
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: <Widget>[
+                  Text(
+                    'NEWS',
+                    style: TextStyle(
+                      fontSize: 12,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      'NEWS',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                      ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              CircleButton(
-                  icon: FaIcon(FontAwesomeIcons.bell),
-                  iconSize: 23.0,
-                  onPressed: () => print('bell')),
-              CircleButton(
-                  icon: FaIcon(FontAwesomeIcons.gripVertical),
-                  iconSize: 23.0,
-                  onPressed: _openEndDrawer,),
+                  ),
+                ],
+              ),
             ],
           ),
-          SliverToBoxAdapter(
-            child: Container(
+          actions: <Widget>[
+            CircleButton(
+                icon: FaIcon(FontAwesomeIcons.bell),
+                iconSize: 23.0,
+                onPressed: () => print('bell')),
+            CircleButton(
+              icon: FaIcon(FontAwesomeIcons.gripVertical),
+              iconSize: 23.0,
+              onPressed: _openEndDrawer,
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Container(
               child: CreatePostContrainer(
                 image: NetworkImage('shorturl.at/cmtQ4'),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Expanded(
+            Expanded(
               child: Container(
                 child: PostContainer(),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
